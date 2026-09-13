@@ -97,7 +97,7 @@ public class NewJREUtil {
         MathUtils.RankedValue<?> nearestInternalRuntime = getNearestInternalRuntime(gameRequiredVersion);
 
         MathUtils.RankedValue<?> selectedRankedRuntime = MathUtils.objectMin(
-                nearestInternalRuntime, nearestInstalledRuntime, (value)->value.rank
+                nearestInstalledRuntime, nearestInternalRuntime, (value)->value.rank
         );
 
         // No possible selections

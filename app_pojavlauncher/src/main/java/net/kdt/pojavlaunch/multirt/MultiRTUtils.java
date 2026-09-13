@@ -119,6 +119,10 @@ public class MultiRTUtils {
             if (versionFile.exists()) {
                 return Tools.read(versionFile.getAbsolutePath());
             }else{
+                File releaseFile = new File(RUNTIME_FOLDER, "/" + name + "/release");
+                if (releaseFile.exists()) {
+                    return "installed";
+                }
                 return null;
             }
         }catch (IOException e) {
