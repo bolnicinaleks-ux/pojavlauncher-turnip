@@ -99,8 +99,8 @@ public class ModLoader {
     public boolean requiresGuiInstallation() {
         switch (modLoaderType) {
             case MOD_LOADER_FORGE:
-            case MOD_LOADER_NEOFORGE:
                 return true;
+            case MOD_LOADER_NEOFORGE:
             case MOD_LOADER_FABRIC:
             case MOD_LOADER_QUILT:
             default:

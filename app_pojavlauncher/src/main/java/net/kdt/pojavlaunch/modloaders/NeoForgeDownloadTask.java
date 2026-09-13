@@ -6,11 +6,14 @@ import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
+import net.kdt.pojavlaunch.utils.FileUtils;
+import net.kdt.pojavlaunch.utils.ZipUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.zip.ZipFile;
 
 public class NeoForgeDownloadTask implements Runnable, Tools.DownloaderFeedback {
     private String mDownloadUrl;
@@ -34,7 +37,7 @@ public class NeoForgeDownloadTask implements Runnable, Tools.DownloaderFeedback 
     @Override
     public void run() {
         if (determineDownloadUrl()) {
-            downloadNeoForge();
+            installNeoForge();
         }
         ProgressLayout.clearProgress(ProgressLayout.INSTALL_MODPACK);
     }
@@ -45,13 +48,24 @@ public class NeoForgeDownloadTask implements Runnable, Tools.DownloaderFeedback 
         ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, progress100, R.string.forge_dl_progress, "NeoForge " + mFullVersion);
     }
 
-    private void downloadNeoForge() {
+    private void installNeoForge() {
         ProgressKeeper.submitProgress(ProgressLayout.INSTALL_MODPACK, 0, R.string.forge_dl_progress, "NeoForge " + mFullVersion);
         try {
-            File destinationFile = new File(Tools.DIR_CACHE, "neoforge-installer.jar");
+            File installerJar = new File(Tools.DIR_CACHE, "neoforge-installer.jar");
             byte[] buffer = new byte[8192];
-            DownloadUtils.downloadFileMonitored(mDownloadUrl, destinationFile, buffer, this);
-            mListener.onDownloadFinished(destinationFile);
+            DownloadUtils.downloadFileMonitored(mDownloadUrl, installerJar, buffer, this);
+
+            // Extract version.json directly from installer jar into versions/neoforge-VERSION/neoforge-VERSION.json
+            try (ZipFile zipFile = new ZipFile(installerJar)) {
+                String versionJsonContent = Tools.read(ZipUtils.getEntryStream(zipFile, "version.json"));
+                String versionId = "neoforge-" + mFullVersion;
+                File versionDir = new File(Tools.DIR_HOME_VERSION, versionId);
+                File versionJsonFile = new File(versionDir, versionId + ".json");
+                FileUtils.ensureDirectory(versionDir);
+                Tools.write(versionJsonFile.getAbsolutePath(), versionJsonContent);
+            }
+
+            mListener.onDownloadFinished(installerJar);
         } catch (FileNotFoundException e) {
             mListener.onDataNotAvailable();
         } catch (IOException e) {
@@ -75,7 +89,6 @@ public class NeoForgeDownloadTask implements Runnable, Tools.DownloaderFeedback 
     }
 
     public boolean findVersion() throws IOException {
-        // First try direct version if mLoaderVersion is full NeoForge version (e.g. 21.1.248)
         if (mLoaderVersion != null && !mLoaderVersion.isEmpty()) {
             mFullVersion = mLoaderVersion;
             mDownloadUrl = NeoForgeUtils.getInstallerUrl(mFullVersion);
