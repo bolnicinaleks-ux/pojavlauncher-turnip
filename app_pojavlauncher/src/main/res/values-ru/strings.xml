@@ -283,6 +283,22 @@
     <string name="hint_search_modpack">Поиск сборок</string>
     <string name="preference_vulkan_driver_system_title">Системный драйвер Vulkan</string>
     <string name="preference_vulkan_driver_system_description">Принудительно использовать системный Vulkan вместо драйвера Turnip на графике Adreno. Повлияет только на Zink и моды, напрямую использующие Vulkan.</string>
+
+    <string name="preference_turnip_drivers_title">Графические драйверы Turnip</string>
+    <string name="preference_turnip_drivers_summary">Выбор или установка сторонних драйверов Turnip Vulkan</string>
+    <string name="turnip_config_dialog_title">Управление драйверами Turnip</string>
+    <string name="turnip_driver_default_title">Встроенный Turnip</string>
+    <string name="turnip_driver_default_desc">Mesa 25.0.0-devel (По умолчанию)</string>
+    <string name="turnip_driver_system_title">Системный драйвер Vulkan</string>
+    <string name="turnip_driver_system_desc">Оригинальный драйвер Qualcomm Adreno</string>
+    <string name="turnip_driver_active">Активен</string>
+    <string name="turnip_driver_add">Установить драйвер</string>
+    <string name="turnip_driver_delete">Удаление драйверов</string>
+    <string name="turnip_driver_delete_title">Удаление драйвера</string>
+    <string name="turnip_driver_delete_confirm">Вы уверены, что хотите удалить драйвер «%s»?</string>
+    <string name="turnip_driver_deleted_success">Драйвер успешно удалён</string>
+    <string name="turnip_driver_installed_success">Драйвер «%s» успешно установлен</string>
+    <string name="turnip_driver_current">Текущий драйвер: %s</string>
     <string name="generic_install">Установить</string>
     <string name="generic_apply">Применить</string>
     <string name="generic_debug">Отладка</string>

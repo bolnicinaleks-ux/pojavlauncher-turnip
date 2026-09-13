@@ -23,6 +23,7 @@ import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
+import net.kdt.pojavlaunch.customturnip.CustomTurnipManager;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.lifecycle.LifecycleAwareAlertDialog;
@@ -240,8 +241,23 @@ public class JREUtils {
             }
         }
 
-        if(info.isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
-            envMap.put("POJAV_LOAD_TURNIP", "1");
+        if(info.isAdreno()) {
+            String activeDriver = LauncherPreferences.PREF_CUSTOM_TURNIP_DRIVER;
+            if ("system".equals(activeDriver) || PREF_ZINK_PREFER_SYSTEM_DRIVER) {
+                envMap.put("POJAV_ZINK_PREFER_SYSTEM_DRIVER", "1");
+            } else {
+                envMap.put("POJAV_LOAD_TURNIP", "1");
+                if (!"default".equals(activeDriver) && activeDriver != null && !activeDriver.isEmpty()) {
+                    File driverFile = CustomTurnipManager.getDriverFile(activeDriver);
+                    if (driverFile != null && driverFile.exists()) {
+                        envMap.put("POJAV_CUSTOM_TURNIP_PATH", driverFile.getAbsolutePath());
+                        envMap.put("POJAV_CUSTOM_TURNIP_DIR", driverFile.getParent());
+                        Log.i("JREUtils", "Using custom Turnip driver: " + driverFile.getAbsolutePath());
+                    } else {
+                        Log.w("JREUtils", "Custom Turnip driver not found: " + activeDriver + ", using default.");
+                    }
+                }
+            }
         }
 
         readCustomEnv(envMap); // Must be last so it overrides anything the user sets for obvious reasons.

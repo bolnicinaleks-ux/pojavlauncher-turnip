@@ -1,151 +1,116 @@
-<h1 align="center">PojavLauncher</h1>
+<h1 align="center">PojavLauncher Turnip Edition</h1>
 
-<img src="https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="130" height="150" alt="PojavLauncher logo">
+<p align="center">
+  <b>A specialized PojavLauncher fork optimized for Snapdragon Adreno GPUs with custom Turnip driver support and modern Vulkan performance.</b>
+</p>
 
-[![Android CI](https://github.com/PojavLauncherTeam/PojavLauncher/workflows/Android%20CI/badge.svg)](https://github.com/PojavLauncherTeam/PojavLauncher/actions)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/PojavLauncherTeam/PojavLauncher)](https://github.com/PojavLauncherTeam/PojavLauncher/actions)
-[![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![Discord](https://img.shields.io/discord/724163890803638273.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.com/invite/aenk3EUvER)
-[![Twitter Follow](https://img.shields.io/twitter/follow/plaunchteam?color=blue&style=flat-square)](https://twitter.com/PLaunchTeam)
+<p align="center">
+  <a href="https://github.com/bolnicinaleks-ux/pojavlauncher-turnip/actions"><img src="https://img.shields.io/github/actions/workflow/status/bolnicinaleks-ux/pojavlauncher-turnip/android.yml?branch=main&label=Android%20CI" alt="CI Status"></a>
+  <a href="https://github.com/bolnicinaleks-ux/pojavlauncher-turnip/commits/main"><img src="https://img.shields.io/github/commit-activity/m/bolnicinaleks-ux/pojavlauncher-turnip" alt="GitHub commit activity"></a>
+  <a href="https://github.com/bolnicinaleks-ux/pojavlauncher-turnip/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-LGPLv3-blue.svg" alt="License"></a>
+</p>
 
-*From [Boardwalk](https://github.com/zhuowei/Boardwalk)'s ashes here comes PojavLauncher!*
+---
 
-PojavLauncher is a launcher that allows you to play Minecraft: Java Edition on your Android and [iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS) devices.
+## 🌟 Key Features of Turnip Edition
 
-For more details, check out our [wiki](https://pojavlauncher.app/)!
+- 🚀 **Upgraded Built-in Turnip Driver (Mesa 25.0-devel)**:
+  Comes with a fresh build of the open-source Freedreno/Turnip Vulkan driver, unlocking maximum rendering performance and compatibility on Qualcomm Snapdragon Adreno 6xx/7xx series GPUs.
+- 📦 **Custom Turnip Driver Installer & Picker**:
+  Full in-app Turnip driver management inspired by modern Android emulation software. Install, switch, and delete custom Turnip builds (`.so` or `.zip` driver archives) right from the app settings without root or modifying APK files.
+- ⚡ **Zink & VulkanMod Compatibility**:
+  Optimized bionic linker namespace isolation and LWJGL Vulkan loader hooks, ensuring seamless execution of Minecraft with Zink (OpenGL over Vulkan) as well as direct Vulkan mods like **VulkanMod**.
+- 🔄 **One-Click Fallback**:
+  Easily switch between the built-in Mesa 25 Turnip driver, any installed custom driver, or the proprietary Qualcomm System Vulkan driver.
 
-## Important Notes
+---
 
-**PojavLauncher has been discontinued** and is no longer supported. Its successor is available [here](https://github.com/AngelAuraMC/Amethyst-Android).
+## 📑 Table of Contents
 
-## Table of Contents
+- [Introduction](#introduction)
+- [How to Use Custom Turnip Drivers](#how-to-use-custom-turnip-drivers)
+- [Building from Source](#building-from-source)
+- [Compatibility](#compatibility)
+- [Credits & Upstream](#credits--upstream)
+- [License](#license)
 
-* [Introduction](#introduction)
-* [Getting PojavLauncher](#getting-pojavlauncher)
-* [Building](#building)
-    * [Quick Build (Recommended)](#quick-build-recommended)
-    * [Detailed Build](#detailed-build)
-* [Current Status](#current-status)
-* [Known Issues](#known-issues)
-* [FAQ](#faq)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
-* [Credits & Dependencies](#credits--dependencies)
-* [Roadmap](#roadmap)
+---
 
-## Introduction
+## 📖 Introduction
 
-* PojavLauncher is a Minecraft: Java Edition launcher for Android and iOS based on [Boardwalk](https://github.com/zhuowei/Boardwalk)
-* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 1.21 snapshots (including Combat Test versions)
-* Modding via Forge and Fabric are also supported.
-* This repository contains source code for Android. For iOS/iPadOS, check out [PojavLauncher_iOS](https://github.com/PojavLauncherTeam/PojavLauncher_iOS).
+**PojavLauncher Turnip Edition** is a fork of [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher), specifically tuned for Android devices with Qualcomm Snapdragon chipsets (Adreno 600 and 700 series). 
 
-## Getting PojavLauncher
+While stock PojavLauncher contains an older Turnip build and limited flexibility for graphics experimentation, this edition allows users to harness the cutting edge of Mesa Turnip developments to achieve higher framerates, better shader compatibility, and reduced graphical artifacts.
 
-You can get PojavLauncher via three methods:
+---
 
-1. **Releases:** Download the prebuilt app from our [stable releases](https://github.com/PojavLauncherTeam/PojavLauncher/releases) or [automatic builds](https://github.com/PojavLauncherTeam/PojavLauncher/actions).
-2. **Google Play:** Get it from Google Play by clicking on this badge: [![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=net.kdt.pojavlaunch)
-3. **Build from Source:** Follow the [building instructions](#building) below.
+## 🛠️ How to Use Custom Turnip Drivers
 
-## Building
+You can easily install third-party Turnip builds (such as builds by Kimocoder, Weab-chan, or Mesa CI):
 
-### Quick Build (Recommended)
+1. Open **PojavLauncher Turnip Edition**.
+2. Go to **Settings** (⚙️) ➔ **Miscellaneous** (*Разное*).
+3. Tap on **Turnip graphics drivers** (*Графические драйверы Turnip*).
+4. Tap **Install driver** (*Установить драйвер*) and select your driver file via the system file picker:
+   - Supported formats:
+     - Direct shared library: `libvulkan_freedreno.so` (or any `.so`)
+     - Driver packages: `.zip` archives containing the driver library
+5. Once imported, select the driver from the list and tap **Set default** (*По умолчанию*) to make it active.
+6. Launch Minecraft!
 
-The easiest way to build PojavLauncher is to use the pre-built JREs provided by our CI.
+> [!TIP]
+> If a custom driver crashes or causes rendering issues on your specific GPU, simply return to the **Turnip Driver Manager** in settings and select **Built-in Turnip** or **System Vulkan driver**.
 
-1. Clone the repository: `git clone https://github.com/PojavLauncherTeam/PojavLauncher.git`
-2. Build the launcher: `./gradlew :app_pojavlauncher:assembleDebug` (Use `gradlew.bat` on Windows)
+---
 
-The built APK will be located in `app_pojavlauncher/build/outputs/apk/debug/`.
+## 🏗️ Building from Source
 
-### Detailed Build
+### Prerequisites
+- JDK 17 or higher
+- Android SDK & NDK (r25c or higher recommended)
+- Git
 
-If you need more control over the build process, follow these steps:
+### Build Steps
 
-1. **Java Runtime Environment (JRE):** Download the `jre8-pojav` artifact from our [CI auto builds](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch/actions).  This package contains pre-built JREs for all supported architectures.  If you need to build the JRE yourself, follow the instructions in the [android-openjdk-build-multiarch](https://github.com/PojavLauncherTeam/android-openjdk-build-multiarch) repository.
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/bolnicinaleks-ux/pojavlauncher-turnip.git
+   cd pojavlauncher-turnip
+   ```
 
-2. **LWJGL:** The build instructions for the custom LWJGL are available over the [LWJGL repository](https://github.com/PojavLauncherTeam/lwjgl3).
+2. Build GLFW stub:
+   ```bash
+   ./gradlew :jre_lwjgl3glfw:build
+   ```
 
-3. **Language List:** Because languages are auto-added by Crowdin, you need to run the language list generator before building. In the project directory, run:
-   * Linux/macOS:
-     ```bash
-     chmod +x scripts/languagelist_updater.sh
-     bash scripts/languagelist_updater.sh
-     ```
-   * Windows:
-     ```batch
-     scripts\languagelist_updater.bat
-     ```
+3. Build the launcher debug APK:
+   ```bash
+   ./gradlew :app_pojavlauncher:assembleDebug
+   ```
 
-4. **Build GLFW stub:** `./gradlew :jre_lwjgl3glfw:build`
+The built APK will be located at:
+`app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk`
 
-5. **Build the launcher:** `./gradlew :app_pojavlauncher:assembleDebug` (Replace `gradlew` with `gradlew.bat` on Windows).
+---
 
-## Current Status
+## 🎮 Compatibility
 
-* [x] OpenJDK 8 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 17 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] OpenJDK 21 Mobile port: ARM32, ARM64, x86, x86_64
-* [x] Headless mod installer
-* [x] Mod installer with GUI
-* [x] OpenGL in OpenJDK environment
-* [x] OpenAL (works on most devices)
-* [x] Support for Minecraft 1.12.2 and below
-* [x] Support for Minecraft 1.13 and above
-* [x] Support for Minecraft 1.17 (22w13a) and above
-* [x] Game surface zooming
-* [x] New input pipe rewritten to native code
-* [x] Rewritten entire controls system
-* [ ] More to come!
+- **Target Architectures**: `arm64-v8a` (required for Turnip Vulkan driver).
+- **Android Version**: Android 10 (API level 29) or higher is required for Mesa 25 Turnip and namespace loader support.
+- **Supported GPUs**: Qualcomm Adreno 6xx and 7xx series (Snapdragon 845, 855, 865, 870, 888, 7+ Gen 2, 8 Gen 1/2/3, etc.).
 
-## Known Issues
+---
 
-See our [issue tracker](https://github.com/PojavLauncherTeam/PojavLauncher/issues) for a list of known issues and their current status.
+## 🤝 Credits & Upstream
 
-## FAQ
+- [PojavLauncherTeam/PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher) — The original PojavLauncher project and team.
+- [Mesa 3D Graphics Library / Freedreno & Turnip](https://gitlab.freedesktop.org/mesa/mesa) — Open-source Vulkan driver for Adreno hardware.
+- [Boardwalk](https://github.com/zhuowei/Boardwalk) — Original Android Java edition launcher.
+- [LWJGL](https://www.lwjgl.org/) — Lightweight Java Game Library.
+- Community driver builders (Kimocoder, Weab-chan, and other Mesa contributors).
 
-See our [wiki](https://pojavlauncherteam.github.io/) for more information.
+---
 
-## Contributing
+## 📄 License
 
-Contributions are welcome! We welcome any type of contribution, not only code. For example, you can help improve the [wiki](https://pojavlauncherteam.github.io/), contribute to the [translations](https://crowdin.com/project/pojavlauncher), or submit bug reports and feature requests.
-
-Any code change should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
-
-## Support
-
-For support, please join our [Discord server](https://discord.com/invite/aenk3EUvER).
-
-## License
-
-PojavLauncher is licensed under [GNU LGPLv3](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE).
-
-## Credits & Dependencies
-
-* [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-* Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt).
-* [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).
-* [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).
-* [LWJGL3](https://github.com/PojavLauncherTeam/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-* [LWJGLX](https://github.com/PojavLauncherTeam/lwjglx) (LWJGL2 API compatibility layer for LWJGL3): unknown license.
-* [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
-* [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt).
-* [bhook](https://github.com/bytedance/bhook) (Used for exit code trapping): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE).
-* [libepoxy](https://github.com/anholt/libepoxy): [MIT License](https://github.com/anholt/libepoxy/blob/master/COPYING).
-* [virglrenderer](https://github.com/PojavLauncherTeam/virglrenderer): [MIT License](https://gitlab.freedesktop.org/virgl/virglrenderer/-/blob/master/COPYING).
-* Thanks to [MCHeads](https://mc-heads.net) for providing Minecraft avatars.
-
-## Roadmap
-
-We are currently focusing on:
-
-* Exploring new rendering technologies.
-
-Future plans include:
-
-* Improving stability and performance.
-* Enhancing the mod installation experience.
-
-We welcome community feedback and suggestions for our roadmap.  Please feel free to open a feature request in our [issue tracker](https://github.com/PojavLauncherTeam/PojavLauncher/issues).
+This project is licensed under the **GNU Lesser General Public License v3.0 (LGPLv3)** — see the [LICENSE](LICENSE) file for details.

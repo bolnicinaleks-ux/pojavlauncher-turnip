@@ -321,6 +321,22 @@
     <string name="preference_vulkan_driver_system_title">Use system Vulkan driver</string>
     <string name="preference_vulkan_driver_system_description">Force the launcher to use the system Vulkan driver instead of Turnip on Adreno GPUs. Only affects Zink and mods that use Vulkan.</string>
 
+    <string name="preference_turnip_drivers_title">Turnip graphics drivers</string>
+    <string name="preference_turnip_drivers_summary">Select or install custom Turnip Vulkan drivers</string>
+    <string name="turnip_config_dialog_title">Turnip Driver Manager</string>
+    <string name="turnip_driver_default_title">Built-in Turnip</string>
+    <string name="turnip_driver_default_desc">Mesa 25.0.0-devel (Default)</string>
+    <string name="turnip_driver_system_title">System Vulkan driver</string>
+    <string name="turnip_driver_system_desc">Proprietary Qualcomm Adreno driver</string>
+    <string name="turnip_driver_active">Active</string>
+    <string name="turnip_driver_add">Install driver</string>
+    <string name="turnip_driver_delete">Delete drivers</string>
+    <string name="turnip_driver_delete_title">Delete Driver</string>
+    <string name="turnip_driver_delete_confirm">Are you sure you want to delete the driver \"%s\"?</string>
+    <string name="turnip_driver_deleted_success">Driver deleted successfully</string>
+    <string name="turnip_driver_installed_success">Driver \"%s\" installed successfully</string>
+    <string name="turnip_driver_current">Current driver: %s</string>
+
     <string name="generic_install">Install</string>
     <string name="generic_apply">Apply</string>
     <string name="generic_debug">Debug</string>

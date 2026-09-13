@@ -100,13 +100,26 @@ EXTERNAL_API void* pojavGetCurrentContext() {
 //#define ADRENO_POSSIBLE
 #ifdef ADRENO_POSSIBLE
 void* load_turnip_vulkan() {
+    if(getenv("POJAV_ZINK_PREFER_SYSTEM_DRIVER") != NULL) return NULL;
     if(getenv("POJAV_LOAD_TURNIP") == NULL) return NULL;
     const char* native_dir = getenv("POJAV_NATIVEDIR");
     const char* cache_dir = getenv("TMPDIR");
     if(!linker_ns_load(native_dir)) return NULL;
     void* linkerhook = linker_ns_dlopen("liblinkerhook.so", RTLD_LOCAL | RTLD_NOW);
     if(linkerhook == NULL) return NULL;
-    void* turnip_driver_handle = linker_ns_dlopen("libvulkan_freedreno.so", RTLD_LOCAL | RTLD_NOW);
+
+    const char* custom_turnip = getenv("POJAV_CUSTOM_TURNIP_PATH");
+    void* turnip_driver_handle = NULL;
+    if(custom_turnip != NULL && strlen(custom_turnip) > 0) {
+        printf("AdrenoSupp: Attempting to load custom Turnip driver from: %s\n", custom_turnip);
+        turnip_driver_handle = linker_ns_dlopen(custom_turnip, RTLD_LOCAL | RTLD_NOW);
+        if(turnip_driver_handle == NULL) {
+            printf("AdrenoSupp: Failed to load custom Turnip driver (%s), falling back to default!\n", dlerror());
+        }
+    }
+    if(turnip_driver_handle == NULL) {
+        turnip_driver_handle = linker_ns_dlopen("libvulkan_freedreno.so", RTLD_LOCAL | RTLD_NOW);
+    }
     if(turnip_driver_handle == NULL) {
         printf("AdrenoSupp: Failed to load Turnip!\n%s\n", dlerror());
         dlclose(linkerhook);
@@ -139,7 +152,8 @@ static void set_vulkan_ptr(void* ptr) {
 }
 
 void load_vulkan() {
-    if(android_get_device_api_level() >= 28) { // the loader does not support below that
+    if(getenv("POJAV_ZINK_PREFER_SYSTEM_DRIVER") == NULL &&
+       android_get_device_api_level() >= 29) { // turnip requires API 29+
 #ifdef ADRENO_POSSIBLE
         void* result = load_turnip_vulkan();
         if(result != NULL) {

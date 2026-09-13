@@ -87,8 +87,14 @@ bool linker_ns_load(const char* lib_search_path) {
         return false;
     }
     // assemble the full path search path
-    char full_path[strlen(SEARCH_PATH) + strlen(lib_search_path) + 2 + 1];
-    sprintf(full_path, "%s:%s", SEARCH_PATH, lib_search_path);
+    const char* custom_dir = getenv("POJAV_CUSTOM_TURNIP_DIR");
+    size_t custom_dir_len = (custom_dir != NULL) ? strlen(custom_dir) : 0;
+    char full_path[strlen(SEARCH_PATH) + strlen(lib_search_path) + custom_dir_len + 4];
+    if (custom_dir_len > 0) {
+        sprintf(full_path, "%s:%s:%s", SEARCH_PATH, lib_search_path, custom_dir);
+    } else {
+        sprintf(full_path, "%s:%s", SEARCH_PATH, lib_search_path);
+    }
     driver_namespace = local_android_create_namespace("pojav-driver",
                                                       full_path,
                                                       full_path,

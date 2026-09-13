@@ -110,6 +110,7 @@ public final class Tools {
     public static String DIR_DATA; //Initialized later to get context
     public static File DIR_CACHE;
     public static String MULTIRT_HOME;
+    public static String TURNIP_DRIVERS_DIR;
     public static String LOCAL_RENDERER = null;
     public static int DEVICE_ARCHITECTURE;
     public static final String LAUNCHERPROFILES_RTPREFIX = "pojav://";
@@ -181,6 +182,7 @@ public final class Tools {
         DIR_CACHE = ctx.getCacheDir();
         DIR_DATA = ctx.getFilesDir().getParent();
         MULTIRT_HOME = DIR_DATA + "/runtimes";
+        TURNIP_DRIVERS_DIR = DIR_DATA + "/turnip_drivers";
         DIR_ACCOUNT_NEW = DIR_DATA + "/accounts";
         NATIVE_LIB_DIR = ctx.getApplicationInfo().nativeLibraryDir;
     }

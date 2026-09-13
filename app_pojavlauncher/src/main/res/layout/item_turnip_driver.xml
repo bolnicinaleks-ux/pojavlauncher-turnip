@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_60sdp"
+    android:paddingHorizontal="@dimen/padding_medium">
+
+    <TextView
+        android:id="@+id/turnip_driver_title"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:textSize="@dimen/_12ssp"
+        android:singleLine="true"
+        android:ellipsize="end"
+        app:layout_constraintBottom_toTopOf="@+id/turnip_driver_subtitle"
+        app:layout_constraintEnd_toStartOf="@+id/turnip_driver_action_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Built-in Turnip" />
+
+    <TextView
+        android:id="@+id/turnip_driver_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginTop="4dp"
+        android:textSize="@dimen/_10ssp"
+        android:singleLine="true"
+        android:ellipsize="middle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/turnip_driver_action_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/turnip_driver_title"
+        tools:text="Mesa 25.0.0-devel (Default)" />
+
+    <LinearLayout
+        android:id="@+id/turnip_driver_action_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/turnip_driver_removebtn"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="@dimen/padding_heavy"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_menu_delete_forever"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <Button
+            android:id="@+id/turnip_driver_setdefaultbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/multirt_config_setdefault" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
