@@ -288,7 +288,7 @@
     <string name="preference_turnip_drivers_summary">Выбор или установка сторонних драйверов Turnip Vulkan</string>
     <string name="turnip_config_dialog_title">Управление драйверами Turnip</string>
     <string name="turnip_driver_default_title">Встроенный Turnip</string>
-    <string name="turnip_driver_default_desc">Mesa 25.0.0-devel (По умолчанию)</string>
+    <string name="turnip_driver_default_desc">Mesa 26.3.0-devel Gen8 v36 (По умолчанию)</string>
     <string name="turnip_driver_system_title">Системный драйвер Vulkan</string>
     <string name="turnip_driver_system_desc">Оригинальный драйвер Qualcomm Adreno</string>
     <string name="turnip_driver_active">Активен</string>
