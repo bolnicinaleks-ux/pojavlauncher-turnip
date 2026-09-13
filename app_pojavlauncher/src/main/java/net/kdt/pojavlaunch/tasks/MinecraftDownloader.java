@@ -70,8 +70,8 @@ public class MinecraftDownloader {
             isLocalProfile = Tools.isLocalProfile(activity);
             Tools.switchDemo(Tools.isDemoProfile(activity));
         } else {
-            isLocalProfile = true;
-            Tools.switchDemo(true);
+            isLocalProfile = false;
+            Tools.switchDemo(false);
         }
 
         sExecutorService.execute(() -> {
