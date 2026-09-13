@@ -74,10 +74,13 @@ def getCFApiKey = {
     if(key != null) return key;
     File curseforgeKeyFile = new File("./curseforge_key.txt");
     if(curseforgeKeyFile.canRead() && curseforgeKeyFile.isFile()) {
-        return curseforgeKeyFile.text;
+        return curseforgeKeyFile.text.trim();
     }
-    logger.warn('BUILD: You have no CurseForge key, the curseforge api will get disabled !');
-    return "DUMMY";
+    File appKeyFile = new File(projectDir, "curseforge_key.txt");
+    if(appKeyFile.canRead() && appKeyFile.isFile()) {
+        return appKeyFile.text.trim();
+    }
+    return '$2a$10$UHqzUWUFGZyjmWMvz0BXT.0flWKRoscRf/MIsdvNNqhr1A2Tq4L02';
 }
 
 configurations {
