@@ -89,6 +89,13 @@ public class ProfileFixer {
         for(String profile : profiles) {
             if(profile.equalsIgnoreCase(profileId)) return profile;
         }
+        if("forge".equalsIgnoreCase(profileId)) {
+            for(String profile : profiles) {
+                if(profile.toLowerCase().contains("forge") || profile.toLowerCase().contains("neoforge")) {
+                    return profile;
+                }
+            }
+        }
         return null;
     }
 }
