@@ -22,10 +22,10 @@ public class DownloadUtils {
     }
 
     public static void download(URL url, OutputStream os) throws IOException {
-        InputStream is = null;
+        HttpURLConnection conn = null;
         try {
             // System.out.println("Connecting: " + url.toString());
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", USER_AGENT);
             conn.setConnectTimeout(TIME_OUT);
             conn.setReadTimeout(TIME_OUT);
@@ -35,18 +35,13 @@ public class DownloadUtils {
                 throw new IOException("Server returned HTTP " + conn.getResponseCode()
                         + ": " + conn.getResponseMessage());
             }
-            is = conn.getInputStream();
-            IOUtils.copy(is, os);
+            try (InputStream is = conn.getInputStream()) {
+                IOUtils.copy(is, os);
+            }
         } catch (IOException e) {
             throw new IOException("Unable to download from " + url, e);
         } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            if (conn != null) conn.disconnect();
         }
     }
 
@@ -71,8 +66,8 @@ public class DownloadUtils {
         HttpURLConnection conn = (HttpURLConnection) new URL(urlInput).openConnection();
         conn.setConnectTimeout(TIME_OUT);
         conn.setReadTimeout(TIME_OUT);
-        InputStream readStr = conn.getInputStream();
-        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+        try (InputStream readStr = conn.getInputStream();
+             FileOutputStream fos = new FileOutputStream(outputFile)) {
             int current;
             int overall = 0;
             int length = conn.getContentLength();
@@ -84,9 +79,10 @@ public class DownloadUtils {
                 fos.write(buffer, 0, current);
                 monitor.updateProgress(overall, length);
             }
-            conn.disconnect();
         } catch (IOException e) {
             throw new IOException("Unable to download from " + urlInput, e);
+        } finally {
+            conn.disconnect();
         }
     }
 
@@ -171,10 +167,14 @@ public class DownloadUtils {
         urlConnection.setRequestMethod("HEAD");
         urlConnection.setDoInput(false);
         urlConnection.setDoOutput(false);
-        urlConnection.connect();
-        int responseCode = urlConnection.getResponseCode();
-        if(responseCode >= 200 && responseCode <= 299) return urlConnection.getContentLength();
-        return -1;
+        try {
+            urlConnection.connect();
+            int responseCode = urlConnection.getResponseCode();
+            if(responseCode >= 200 && responseCode <= 299) return urlConnection.getContentLength();
+            return -1;
+        } finally {
+            urlConnection.disconnect();
+        }
     }
 
     public interface ParseCallback<T> {
@@ -192,4 +192,3 @@ public class DownloadUtils {
         }
     }
 }
-
