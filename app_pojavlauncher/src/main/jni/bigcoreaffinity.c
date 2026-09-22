@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <sched.h>
 #include <string.h>
+#include <errno.h>
 
 #define FREQ_MAX 256
 void bigcore_format_cpu_path(char* buffer, unsigned int cpu_core) {
@@ -70,7 +71,7 @@ void bigcore_set_affinity() {
     printf("bigcore: max frequency %lu Hz, total big/prime cores: %u / %u\n", max_freq, big_cores_count, corecnt);
     int result = sched_setaffinity(0, CPU_SETSIZE, &bigcore_affinity_set);
     if(result != 0) {
-        printf("bigcore: setting affinity failed: %s\n", strerror(result));
+        printf("bigcore: setting affinity failed: %s\n", strerror(errno));
     }else{
         printf("bigcore: forced process onto %u big CPU cores\n", big_cores_count);
     }
