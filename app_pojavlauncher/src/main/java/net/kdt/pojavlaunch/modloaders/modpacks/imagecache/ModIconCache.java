@@ -14,16 +14,19 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class ModIconCache {
-    ThreadPoolExecutor cacheLoaderPool = new ThreadPoolExecutor(10,
-            10,
+    private static final int ICON_WORKER_COUNT = 10;
+    private static final int ICON_QUEUE_CAPACITY = 128;
+    ThreadPoolExecutor cacheLoaderPool = new ThreadPoolExecutor(ICON_WORKER_COUNT,
+            ICON_WORKER_COUNT,
             1000,
             TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>());
+            new ArrayBlockingQueue<>(ICON_QUEUE_CAPACITY),
+            new ThreadPoolExecutor.DiscardOldestPolicy());
     File cachePath;
     private final List<WeakReference<ImageReceiver>> mCancelledReceivers = new ArrayList<>();
     public ModIconCache() {

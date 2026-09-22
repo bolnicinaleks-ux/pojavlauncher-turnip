@@ -1398,7 +1398,6 @@ public final class Tools {
     /** Releases the cache of compatible renderers. */
     public static void releaseRenderersCache() {
         sCompatibleRenderers = null;
-        System.gc();
     }
 
     public static boolean deviceSupportsGyro(@NonNull Context context) {
