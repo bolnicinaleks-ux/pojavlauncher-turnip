@@ -196,8 +196,8 @@ public class CustomTurnipManager {
             } else {
                 // Raw .so file
                 File destFile = new File(destDir, LIB_TURNIP_NAME);
-                try (FileOutputStream fos = new FileOutputStream(destFile)) {
-                    IOUtils.copy(bis, fos);
+                try (java.io.OutputStream bos = new java.io.BufferedOutputStream(new FileOutputStream(destFile), 65536)) {
+                    IOUtils.copy(bis, bos);
                 }
             }
         }
@@ -240,9 +240,9 @@ public class CustomTurnipManager {
     }
 
     private static void extractZip(InputStream is, File targetDir) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(is)) {
+        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is, 65536))) {
             ZipEntry entry;
-            byte[] buffer = new byte[8192];
+            byte[] buffer = new byte[65536];
             while ((entry = zis.getNextEntry()) != null) {
                 String name = entry.getName();
                 if (name.contains("..")) {
@@ -257,10 +257,10 @@ public class CustomTurnipManager {
                     if (parent != null && !parent.exists()) {
                         parent.mkdirs();
                     }
-                    try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                    try (java.io.OutputStream bos = new java.io.BufferedOutputStream(new FileOutputStream(outFile), 65536)) {
                         int len;
                         while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
+                            bos.write(buffer, 0, len);
                         }
                     }
                 }

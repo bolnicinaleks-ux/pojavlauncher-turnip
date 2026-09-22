@@ -2,6 +2,8 @@ package net.kdt.pojavlaunch.utils;
 
 import org.apache.commons.io.IOUtils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,15 +42,16 @@ public class ZipUtils {
         Enumeration<? extends ZipEntry> zipEntries = zipFile.entries();
 
         int dirNameLen = dirName.length();
+        byte[] buffer = new byte[65536];
         while(zipEntries.hasMoreElements()) {
             ZipEntry zipEntry = zipEntries.nextElement();
             String entryName = zipEntry.getName();
             if(!entryName.startsWith(dirName) || zipEntry.isDirectory()) continue;
             File zipDestination = new File(destination, entryName.substring(dirNameLen));
             FileUtils.ensureParentDirectory(zipDestination);
-            try (InputStream inputStream = zipFile.getInputStream(zipEntry);
-                 OutputStream outputStream = new FileOutputStream(zipDestination)) {
-                IOUtils.copy(inputStream, outputStream);
+            try (InputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry), 65536);
+                 OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(zipDestination), 65536)) {
+                IOUtils.copyLarge(inputStream, outputStream, buffer);
             }
         }
     }
