@@ -39,21 +39,42 @@ public class JREUtils {
     public static String LD_LIBRARY_PATH;
     public static String jvmLibraryPath;
 
+    private static String sCachedLdLibraryPathEnv;
+    private static String[] sCachedLdLibraryPaths;
+
+    private static String[] getParsedLdLibraryPaths(String env) {
+        if (env == null) return null;
+        if (env.equals(sCachedLdLibraryPathEnv) && sCachedLdLibraryPaths != null) {
+            return sCachedLdLibraryPaths;
+        }
+        String[] paths = env.split(":");
+        sCachedLdLibraryPathEnv = env;
+        sCachedLdLibraryPaths = paths;
+        return paths;
+    }
+
     public static String findInLdLibPath(String libName) {
-        if(Os.getenv("LD_LIBRARY_PATH")==null) {
+        String ldEnv = Os.getenv("LD_LIBRARY_PATH");
+        if(ldEnv == null) {
             try {
                 if (LD_LIBRARY_PATH != null) {
                     Os.setenv("LD_LIBRARY_PATH", LD_LIBRARY_PATH, true);
+                    ldEnv = LD_LIBRARY_PATH;
                 }
             }catch (ErrnoException e) {
                 e.printStackTrace();
             }
-            return libName;
+            if (ldEnv == null) {
+                return libName;
+            }
         }
-        for (String libPath : Os.getenv("LD_LIBRARY_PATH").split(":")) {
-            File f = new File(libPath, libName);
-            if (f.exists() && f.isFile()) {
-                return f.getAbsolutePath();
+        String[] libPaths = getParsedLdLibraryPaths(ldEnv);
+        if (libPaths != null) {
+            for (String libPath : libPaths) {
+                File f = new File(libPath, libName);
+                if (f.isFile()) {
+                    return f.getAbsolutePath();
+                }
             }
         }
         return libName;
