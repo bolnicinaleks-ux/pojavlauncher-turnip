@@ -526,7 +526,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         try {
             mControlLayout.loadLayout((CustomControls)null);
             mControlLayout.setModifiable(false);
-            System.gc();
             mControlLayout.loadLayout(
                     minecraftProfile.controlFile == null
                             ? LauncherPreferences.PREF_DEFAULTCTRL_PATH
